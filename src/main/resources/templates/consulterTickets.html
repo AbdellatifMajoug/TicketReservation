@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="templateAdmin">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard Admin</title>
+  <link href="css/pagination.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div layout:fragment="content">
+	<div class="col-md-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class=" text-primary">
+                      <tr><th>
+                        Users
+                      </th>
+                      <th>
+                        place
+                      </th>
+                      <th>
+                        numero
+                      </th>
+                      <th>
+                        vip
+                      </th>
+                      
+                    </tr></thead>
+                    <tbody>
+                      <tr th:each="t:${tickets}">
+                         <td th:text="${t.user.username}"></td> 
+                        <td th:text="${t.place.numero}"></td>
+                        <td th:text="${t.id}"></td>
+                        <td th:if="${t.vip}">Oui</td>
+                          <td th:if="${!t.vip}">Non</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                   <div class="pagination">
+					  <a href="#" >&laquo;</a>
+					  <a href="#" th:each=page,status:${pages} th:href="@{gestTicket(page=${status.index})}"
+					  th:text="${status.index+1}" th:class="${status.index==currentPage?'active':''}"></a>
+					  
+					  <a href="#">&raquo;</a>
+				</div>
+                </div>
+              </div>
+            </div>
+          </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="templateAdmin">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard Admin</title>
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="col-md-8">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="title">Modifier Theatre</h5>
+              </div>
+              <div class="card-body">
+                <form th:action="@{modifierTheatre}" method="post">
+                  <div class="row">
+                    <div class="col-md-5 pr-1">
+                      <div class="form-group">
+                        <label>Nom : </label>
+                        <input type="text" class="form-control"  placeholder="Nom du theatre" name="nom" th:value="${theatre.nom}">
+                      </div>
+                    </div>
+                    <div class="col-md-3 px-1">
+                      <div class="form-group">
+                        <label>Nombre de places : </label>
+                        <input type="number" class="form-control" placeholder="le nombre de places" name="nombrePlaces" th:value="${theatre.nombrePlaces}">
+                      </div>
+                    </div>
+                    <div class="col-md-4 pl-1">
+                      <div class="form-group">
+                        <label>Nombre de places VIP : </label>
+                         <input type="number" class="form-control" placeholder="le nombre de places (VIP)" name="nombrePlacesVIP" th:value="${theatre.nombrePlacesVIP}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label>Ville :</label>
+                        <select name="ville" class="form-control" >
+						  <option th:text="${v.nom}" th:each="v:${villes}" th:value="${v.id}"  th:selected="${v.id == theatre.ville.id}"></option>
+						</select>
+                      </div>
+                    </div>
+                  </div>
+                  <input type="hidden" th:value="${theatre.id}" name="id">
+                  <button type="submit" class="btn btn-primary btn-block">Modifier</button>
+                </form>
+              </div>
+            </div>
+          </div>
+	</div>
+</body>
+</html>

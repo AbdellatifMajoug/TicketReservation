@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="templateAdmin">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard Admin</title>
+<link href="css/pagination.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<div layout:fragment="content">
+		<div class="col-md-8">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="title">Ajouter Projection</h5>
+				</div>
+				<div class="card-body">
+					<form th:action="@{saveProjection}" method="post">
+						<div class="row">
+							<div class="col-md-5 pr-1">
+								<div class="form-group">
+									<label>Spectacle : </label> <select name="spectacle"
+										class="form-control">
+										<option th:text="${s.titre}" th:each="s:${spectacles}"
+											th:value="${s.id}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-3 px-1">
+								<div class="form-group">
+									<label>Theatre : </label> <select name="theatre"
+										class="form-control">
+										<option th:text="${t.nom}" th:each="t:${theatres}"
+											th:value="${t.id}"></option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-4 pl-1">
+								<div class="form-group">
+									<label>Date : </label> <input type="date" class="form-control"
+										name="datePr" pattern="yyyy-MM-dd">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6 pr-1">
+								<div class="form-group">
+									<label>Heure : </label> <input type="text" class="form-control"
+										placeholder="HH:MM" name="heure">
+								</div>
+							</div>
+							<div class="col-md-6 pl-1">
+								<div class="form-group">
+									<label>Prix : </label> <input type="text" class="form-control"
+										placeholder="Prix en dh" name="prix">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Prix VIP:</label> <input type="text"
+										class="form-control" placeholder="prix (VIP)" name="prixVIP">
+								</div>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary btn-block">Ajouter</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header">
+					<form th:action="@{gestionProjection}" method="get">
+						<label>Theatre: </label> <select name="idTh" class="form-control"
+							onchange="this.form.submit()">
+							<option th:value="${null}">all</option>
+							<option th:text="${t.nom}" th:each="t:${theatres}"
+								th:value="${t.id}" th:selected="${idTh==t.id}"></option>
+						</select>
+					</form>
+				</div>
+				<div class="card-body">
+					<div class="card" style="width: 18rem;" th:each="p:${projections}">
+						<img class="card-img-top"
+							th:src="@{'/getImage/'+${p.spectacle.image.Id}}" width="250"
+							height="350">
+						<div class="card-body">
+							<h5 class="card-title" th:text="${p.spectacle.titre}"></h5>
+							<p class="card-text" th:text="${'theatre : '+p.theatre.nom}"></p>
+							<p class="card-text" th:text="${'Date : '+p.getDatePrStr()}"></p>
+							<p class="card-text" th:text="${'Heure : '+p.heurePr}"></p>
+							<p class="card-text" th:text="${'Prix : '+p.prix + ' DH'}"></p>
+							<p class="card-text text-danger" th:if="${p.isClosed() == 1}">Fermé</p>
+							<div
+								class="d-flex flex-md-row flex-column justify-content-between text-center">
+								<a class="btn btn-success"
+									th:href="@{editProjection(id=${p.id})}">Modifier</a> <a
+									onclick="return confirm('Etes vous sure? si vous supprimez cette projection toutes les informatons associees vont etre supprimez!')"
+									class="btn btn-danger"
+									th:href="@{deleteProjection(id=${p.id})}">Supprimer</a>
+							</div>
+							<a th:href="@{gestionTicket(idPr=${p.id})}" class="btn btn-primary"
+								style="width: 100%">Consulter les tickets</a>
+
+						</div>
+					</div>
+
+				</div>
+				<div class="pagination">
+					<a href="#">&laquo;</a> <a href="#" th:each=page,status:${pages}
+						th:href="@{gestionProjection(page=${status.index})}"
+						th:text="${status.index+1}"
+						th:class="${status.index==currentPage?'active':''}"></a> <a
+						href="#">&raquo;</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

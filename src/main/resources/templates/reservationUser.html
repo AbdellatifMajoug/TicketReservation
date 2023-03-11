@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="templateUser">
+<head>
+<meta charset="UTF-8">
+<title>Réservation</title>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div layout:fragment="content">
+<div class="wrap">
+<div class="cont-desc span_1_of_2">
+				  <div class="product-details">				
+					<div class="grid images_3_of_2">
+						<img th:src="@{'/getImage/'+${projection.spectacle.image.Id}}" alt="">
+				  </div>
+				<div class="desc span_3_of_2">
+					<h2 th:text="${projection.spectacle.titre}"></h2>
+					<p th:text="${projection.spectacle.description}"></p>					
+					<div class="price">
+						<p>Prix: <span th:text="${projection.prix+' DH'}"></span></p>
+					</div>
+					<div class="available">
+						<ul>
+						  <li><span>Theatre: </span> &nbsp;<span th:text="${projection.theatre.nom}"></span> </li>
+						  <li><span>Date:</span>&nbsp; <span th:text="${projection.getDatePrStr()+' à '+projection.heurePr}"></span></li>
+						  <li><span style="font-weight: bold;" th:if="${nbTicketNonVIP != 0}" th:text="${'Prix normal :'+projection.prix+' DH '}"></span><br>
+						  <span th:text="${nbTicketNonVIP+' disponibles'}" style="font-weight: bold;"></span></li>			
+						  <li><span style="font-weight: bold;" th:if="${nbTicketNonVIP == 0}" class="text-danger">non disponible</span></li>	
+						  <li><span style="font-weight: bold;" th:text="${'Prix VIP :'+projection.prixVIP+' DH'}"></span>
+						  <li><span style="font-weight: bold;" th:if="${nbTicketVIP != 0}" th:text="${nbTicketVIP+' disponibles'}"></span></li>
+						  <li><span style="font-weight: bold;" th:if="${nbTicketVIP == 0}" class="text-danger">non disponible</span></li>
+					    </ul>
+					</div>
+				<div class="share-desc">
+				<form th:action="@{payment}" method="post">
+					<div class="share">
+						Nombre des Tickets :<input class="text_box" type="text" th:disabled="${nbTicketNonVIP == 0 || nbTicketVIP == 0 || projection.isClosed()==1}" name="quantite">&nbsp;
+						Vip : <input type="radio" name="vip" th:value="${'true'}" checked>
+						Normal :<input type="radio" name="vip" th:value="${'false'}">
+					</div>
+					<input type="hidden" name="idPr" th:value="${projection.id}">
+					<div class="button"><span><button style="background-color: #FC7D01;border: none;color: white;padding: 8px 10px;outline: 0;" th:if="${nbTicketNonVIP != 0 && projection.isClosed()!=1}">Acheter</button></span></div>
+				</form>
+				</div>
+				</div>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<span style="font-weight: bold;" class="text-danger" th:text="${#httpServletRequest.getParameter('error')}"></span>
+				<div class="text-danger" th:if="${projection.isClosed()==1}">Le spectacle est fermé </div>
+			</div>
+		  </div>
+   </div>
+   </div>
+</body>
+</html>

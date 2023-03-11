@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
+
+<script type="text/javascript" src="js/jquery-1.9.0.min.js"></script> 
+<script type="text/javascript" src="js/move-top.js"></script>
+<script type="text/javascript" src="js/easing.js"></script>
+</head>
+<body>
+	<div class="header">
+		 <div class="headertop_desc">
+			<div class="wrap">
+				
+					<div class="account_desc">
+						<ul>
+							<li sec:authorize="!isAuthenticated()"><a  th:href="@{login}">Login</a></li>
+							<li ><a th:href="@{index}" >Home</a></li>
+							<li sec:authorize="isAuthenticated() && hasRole('ROLE_USER')" ><a th:href="@{showTickets}" >List Tickets</a></li>
+							<li sec:authorize="isAuthenticated() && hasRole('ROLE_ADMIN')" ><a th:href="@{gestionTheatre}" >Dashboard</a></li>
+							<li sec:authorize="isAuthenticated()"><a th:href="@{logout}">Logout</a></li>
+							<li sec:authorize="isAuthenticated()"><a href="#" sec:authentication="name"></a></li>
+						</ul>
+					</div>
+				<div class="clear"></div>
+			</div>
+	  	</div>
+  	  		<div layout:fragment="filtre"></div>
+   </div>
+<!-- //nav -->
+<div class="content" layout:fragment="content">
+        
+          
+        
+</div>
+</body>
+</html>
+

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="templateUser">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="../style.css" rel="stylesheet" />
+<link href="../assets/demo/demo.css" rel="stylesheet" />
+
+
+</head>
+<body>
+<div layout:fragment="content">
+<div class="container">
+      <div class="cards grid-row" >
+        <div class="card" th:each="t:${tickets}">
+          <div class="card-top">
+            
+          </div>
+          <div class="card-info">
+            <h2 th:if="${t.vip}">Ticket VIP</h2>
+            <h2 th:if="${!t.vip}">Ticket Normal</h2>
+		        <b>Place: </b><span th:text="${t.place.numero}"></span><br>
+		        <b>numero: </b><span th:text="${t.id}"></span><br>
+		        <b>Theatre: </b><span th:text="${t.projection.theatre.nom}"></span><br>
+		        <b>Spectacle: </b><span th:text="${t.projection.spectacle.titre}"></span><br>
+		        <b>date: </b><span th:text="${t.projection.getDatePrStr()}"></span><br>
+		        <b>heure: </b><span th:text="${t.projection.heurePr}"></span><br>
+            </div>
+          <div class="card-bottom flex-row">
+            <a href="#" class="button btn-yellow" th:if="${t.vip}">VIP</a>
+          </div>
+        </div>
+       
+      </div>    
+      </div>
+</div>
+</body>
+</html>

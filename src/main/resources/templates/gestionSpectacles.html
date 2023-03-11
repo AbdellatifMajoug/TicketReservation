@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="templateAdmin">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard Admin</title>
+  <link href="css/pagination.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div layout:fragment="content">
+	<div class="col-md-8">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="title">Ajouter Spectacle</h5>
+              </div>
+              <div class="card-body">
+                <form th:action="@{saveSpectacle}" method="post" enctype="multipart/form-data">
+                  <div class="row">
+                     <div class="col-md-5 pr-1">
+                      <div class="form-group">
+                        <label>Titre : </label>
+                        <input type="text" class="form-control" placeholder="titre" name="titre">
+                      </div>
+                    </div>
+                    <div class="col-md-3 px-1">
+                      <div class="form-group">
+                        <label>duree : </label>
+                        <input type="text" class="form-control" placeholder="duree" name="duree">
+                      </div>
+                    </div>
+                    <div class="col-md-4 pl-1">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">realisateur : </label>
+                        <input type="text" class="form-control" placeholder="realisateur" name="realisateur">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 pr-1">
+                      <div class="form-group">
+                        <label>categorie : </label>
+                        <select name="categorie" class="form-control" >
+						  <option th:text="${c.nom}" th:each="c:${categories}" th:value="${c.id}"></option>
+						</select>
+                      </div>
+                    </div> 
+            	<div class="col-md-6 pl-1">
+                       <label>Photo :</label>
+						<input type="file" class="form-control" name="photo"> 
+                    </div> 
+                  </div>
+                  <div class="col-md-12">
+                      <div class="form-group">
+                        <label>Description : </label>
+                        <textarea class="form-control" name="description" rows="4" cols="50"></textarea>
+                      </div>
+                    </div> 
+                 <button type="submit" class="btn btn-primary btn-block">Ajouter</button>
+                  
+                  
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead class=" text-primary">
+                      <tr><th>
+                        Photos
+                      </th>
+                      <th>
+                        Titres
+                      </th>
+                      <th>
+                        durees
+                      </th>
+                      <th>
+                        realisateurs
+                      </th>
+                      <th>
+                        Categories
+                      </th>
+                      <th>
+                        Descriptions
+                      </th>
+                      <th>Actions</th>
+                    </tr></thead>
+                    <tbody>
+                      <tr  th:each="s:${spectacles}">
+                         <td ><img th:src="@{'/getImage/'+${s.image.Id}}" width="100" height="150"></td> 
+                        <td th:text="${s.titre}"></td>
+                        <td th:text="${s.duree + ' H'}"></td>
+                        <td th:text="${s.realisateur}"></td>
+                        <td th:text="${s.categorie.nom}"></td>
+                        <td th:text="${s.description}"></td>
+                        <td><a onclick="return confirm('Etes vous sure? si vous supprimez cet spectacle toutes les informatons associees vont etre supprimez!')" 
+						class="btn btn-danger" th:href="@{deleteSpectacle(id=${s.id})}">Delete</a></td>
+						<td><a class="btn btn-success" th:href="@{editSpectacles(id=${s.id})}">Edit</a></td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                    <div class="pagination">
+					  <a href="#" >&laquo;</a>
+					  <a href="#" th:each=page,status:${pages} th:href="@{gestionSpectacle(page=${status.index})}"
+					  th:text="${status.index+1}" th:class="${status.index==currentPage?'active':''}"></a>
+					  <a href="#">&raquo;</a>
+				</div>
+                </div>
+              </div>
+            </div>
+          </div>
+</div>
+</body>
+</html>
